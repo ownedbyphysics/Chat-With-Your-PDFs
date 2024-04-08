@@ -4,7 +4,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 
-
+openai_api_key = ''
 def extractPdfText(documents):
     """
     Extracts raw text from the pdfs
