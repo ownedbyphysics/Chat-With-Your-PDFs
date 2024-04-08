@@ -19,7 +19,7 @@ def handle_userinput(user_question):
                 "{{MSG}}", message.content), unsafe_allow_html=True)
 
 def main():
-    load_dotenv()
+    #load_dotenv()
     
     st.set_page_config(page_title='Ask Your PDFs:', 
                        page_icon=":books:",
