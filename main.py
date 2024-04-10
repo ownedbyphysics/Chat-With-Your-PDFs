@@ -9,8 +9,8 @@ from templates import css, bot_template, user_template
 
 def handle_userinput(user_question):
     response = st.session_state.conversation({'question': user_question})
-    st.session_state.chat_history = response['chat_history']
-
+    st.session_state.chat_history = response['chat_history']  
+    
     for i, message in enumerate(st.session_state.chat_history):
         if i % 2 == 0:
             st.write(user_template.replace(
@@ -57,7 +57,7 @@ def main():
     
     st.markdown(page_bg_img, unsafe_allow_html=True)
    
- 
+    
     def submit():
         st.session_state.user_question = st.session_state.widget
         st.session_state.widget = ''
