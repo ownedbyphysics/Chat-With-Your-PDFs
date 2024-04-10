@@ -1,6 +1,6 @@
 from PyPDF2 import PdfReader
 from langchain_community.vectorstores import FAISS
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 
@@ -33,7 +33,7 @@ def textChunks(text):
 
 
 def vectorDB(chunks):
-    embeddings = OpenAIEmbeddings()
+    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
     #embeddings = openaiEmbeddings(OPEN_API_KEY=OPEN_API_KEY)
     vector_store = FAISS.from_texts(texts=chunks,
                                     embedding=embeddings)

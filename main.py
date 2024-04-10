@@ -1,3 +1,4 @@
+import time
 import streamlit as st 
 from dotenv import load_dotenv
 from processText import extractPdfText, textChunks, vectorDB
@@ -7,7 +8,7 @@ from templates import css, bot_template, user_template
 
 
 def handle_userinput(user_question):
-    response = st.session_state.chat({'question': user_question})
+    response = st.session_state.conversation({'question': user_question})
     st.session_state.chat_history = response['chat_history']
 
     for i, message in enumerate(st.session_state.chat_history):
@@ -46,20 +47,27 @@ def main():
     st.markdown(page_bg_img, unsafe_allow_html=True)
     
     if "conversation" not in st.session_state:
-        st.session_state.chat = None
+        st.session_state.conversation = None
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
-    
+    if 'user_question' not in st.session_state:
+        st.session_state.user_question = None
     st.title('Ask your PDFs :books: ')
-    #st.text_input('Ask a question')
+    
     
     st.markdown(page_bg_img, unsafe_allow_html=True)
+   
+ 
+    def submit():
+        st.session_state.user_question = st.session_state.widget
+        st.session_state.widget = ''
     
+    user_question = st.text_input("Ask a question about your documents:",
+                                   key='widget', on_change=submit)
     
-    user_question = st.text_input("Ask a question about your documents:")
-    if user_question:
-        handle_userinput(user_question)
-    else: print('lalala')
+    if st.session_state.user_question:
+        handle_userinput(st.session_state.user_question)
+    else: print('no question yet')
     
     with st.sidebar:
         st.subheader('Your docs go here:')
@@ -69,7 +77,10 @@ def main():
                 text = extractPdfText(pdfs)
                 chunks = textChunks(text)
                 embeddingsDB = vectorDB(chunks)
-                st.session_state.chat = get_conversation_chain(embeddingsDB)
+                st.session_state.conversation = get_conversation_chain(embeddingsDB)
+            st.write("Done!")
+            time.sleep(5) 
+            
                 
                 #st.write(embeddingsDB)
 
