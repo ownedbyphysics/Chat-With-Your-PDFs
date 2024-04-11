@@ -7,6 +7,7 @@ from templates import css, bot_template, user_template
 
 
 
+
 def handle_userinput(user_question):
     response = st.session_state.conversation({'question': user_question})
     st.session_state.chat_history = response['chat_history']  
@@ -18,6 +19,8 @@ def handle_userinput(user_question):
         else:
             st.write(bot_template.replace(
                 "{{MSG}}", message.content), unsafe_allow_html=True)
+            
+            st.markdown("---")
 
 def main():
     #load_dotenv()
@@ -71,15 +74,21 @@ def main():
     
     with st.sidebar:
         st.subheader('Your docs go here:')
-        pdfs = st.file_uploader("Import here your pdfs: :pushpin:", accept_multiple_files=True)
-        if st.button('Feed me!'):
-            with st.spinner('Processing'):
-                text = extractPdfText(pdfs)
-                chunks = textChunks(text)
-                embeddingsDB = vectorDB(chunks)
-                st.session_state.conversation = get_conversation_chain(embeddingsDB)
-            st.write("Done!")
-            time.sleep(5) 
+        file_type = st.sidebar.radio("Select file type:", ("PDF", "CSV"))
+        if file_type=='PDF':
+            pdfs = st.file_uploader("Import here your pdfs: :pushpin:", accept_multiple_files=True, type='pdf')
+            if st.button('Feed me!'):
+                with st.spinner('Processing'):
+                    text = extractPdfText(pdfs)
+                    chunks = textChunks(text)
+                    embeddingsDB = vectorDB(chunks)
+                    st.session_state.conversation = get_conversation_chain(embeddingsDB)
+                st.write("Done!")
+                time.sleep(5) 
+        
+        elif file_type=='CSV':
+            csv = st.file_uploader("Import here your csv: :pushpin:", accept_multiple_files=False, type='csv')
+        
             
                 
                 #st.write(embeddingsDB)
