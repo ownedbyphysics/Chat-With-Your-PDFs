@@ -1,10 +1,14 @@
+import os
+import shutil
 from PyPDF2 import PdfReader
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS, Chroma
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 
 openai_api_key = ''
+CHROMA_PATH = "chroma"
+DATA_PATH = "data/philosophy"
 
 def extractPdfText(documents):
     """
@@ -40,3 +44,16 @@ def vectorDB(chunks):
                                     embedding=embeddings)
     
     return vector_store
+
+
+def chromaDB(chunks):
+    # Clear out the database first.
+    if os.path.exists(CHROMA_PATH):
+        shutil.rmtree(CHROMA_PATH)
+
+    # Create a new DB from the documents.
+    db = Chroma.from_documents(
+        chunks, OpenAIEmbeddings(), persist_directory=CHROMA_PATH
+    )
+    db.persist()
+    print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")

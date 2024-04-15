@@ -30,7 +30,10 @@ def main():
                        layout="wide",
                        initial_sidebar_state="expanded",
                     )  
-    
+    st.image("cover2.jpg", use_column_width=False, width=500) 
+   
+   
+   
     st.write(css, unsafe_allow_html=True)
     
     page_bg_img = f"""
@@ -74,10 +77,8 @@ def main():
     
     with st.sidebar:
         st.subheader('Your docs go here:')
-        file_type = st.sidebar.radio("Select file type:", ("PDF", "CSV"))
-        if file_type=='PDF':
-            pdfs = st.file_uploader("Import here your pdfs: :pushpin:", accept_multiple_files=True, type='pdf')
-            if st.button('Feed me!'):
+        pdfs = st.file_uploader("Import here your pdfs: :pushpin:", accept_multiple_files=True, type='pdf')
+        if st.button('Feed me!'):
                 with st.spinner('Processing'):
                     text = extractPdfText(pdfs)
                     chunks = textChunks(text)
@@ -85,12 +86,8 @@ def main():
                     st.session_state.conversation = get_conversation_chain(embeddingsDB)
                 st.write("Done!")
                 time.sleep(5) 
-        
-        elif file_type=='CSV':
-            csv = st.file_uploader("Import here your csv: :pushpin:", accept_multiple_files=False, type='csv')
-        
-            
-                
+        #st.write('')
+        #st.image("vertical.jpg")
                 #st.write(embeddingsDB)
 
 
