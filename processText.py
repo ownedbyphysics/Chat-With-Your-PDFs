@@ -23,7 +23,7 @@ def extractPdfText(documents):
     return text
 
 
-def textChunks(text):
+def textChunks_old(text):
     """
     Splits the extracted text to chunks
     """
@@ -34,6 +34,30 @@ def textChunks(text):
         length_function=len
         )
     chunks = text_splitter.split_text(text)
+    return chunks
+
+
+def textChunks(text, save):
+    """
+    Splits the extracted text to chunks
+    """
+    if not save:
+        text_splitter = CharacterTextSplitter(
+            separator="\n",
+            chunk_size=1000,
+            chunk_overlap=200,
+            length_function=len
+            )
+        chunks = text_splitter.split_text(text)
+        
+    else:
+        text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200,
+        length_function=len
+        )
+        chunks = text_splitter.create_documents([text])
+        
     return chunks
 
 
@@ -57,3 +81,4 @@ def chromaDB(chunks):
     )
     db.persist()
     print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
+    
