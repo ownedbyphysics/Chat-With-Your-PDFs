@@ -4,11 +4,9 @@ from PyPDF2 import PdfReader
 from langchain_community.vectorstores import FAISS, Chroma
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_openai import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
 
 openai_api_key = ''
-CHROMA_PATH = "chroma"
-DATA_PATH = "data/philosophy"
 
 def extractPdfText(documents):
     """
@@ -63,22 +61,30 @@ def textChunks(text, save):
 
 def vectorDB(chunks):
     embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
-    #embeddings = openaiEmbeddings(OPEN_API_KEY=OPEN_API_KEY)
     vector_store = FAISS.from_texts(texts=chunks,
                                     embedding=embeddings)
     
     return vector_store
 
 
-def chromaDB(chunks):
-    # Clear out the database first.
-    if os.path.exists(CHROMA_PATH):
-        shutil.rmtree(CHROMA_PATH)
+def chromaDB(chunks, name):
 
-    # Create a new DB from the documents.
-    db = Chroma.from_documents(
-        chunks, OpenAIEmbeddings(), persist_directory=CHROMA_PATH
-    )
-    db.persist()
-    print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
+    try:
+        db = Chroma.from_documents(
+        documents=chunks, 
+        embedding= OpenAIEmbeddings(openai_api_key=openai_api_key),
+        persist_directory=name
+        )
+        db.persist()
+        return 'your ' +  name + ' dabase has been created'
+    except:
+        return 'failed'
+
     
+def retriever(database_name):
+    vectordb = Chroma(persist_directory=str(database_name), 
+                      embedding_function=OpenAIEmbeddings(openai_api_key=openai_api_key))
+
+    retriever = vectordb.as_retriever()
+
+    return retriever

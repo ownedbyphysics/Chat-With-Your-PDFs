@@ -1,7 +1,8 @@
 import time
 import streamlit as st 
 from dotenv import load_dotenv
-from processText import extractPdfText, textChunks, vectorDB
+from langchain.chains import RetrievalQA
+from processText import extractPdfText, textChunks, vectorDB, chromaDB, retriever
 from chatWithPDF import get_conversation_chain
 from templates import css, bot_template, user_template
 
@@ -118,7 +119,7 @@ def main():
                             text = extractPdfText(pdfs)
                             chunks = textChunks(text, True)
                             embeddingsDB = vectorDB(chunks)
-                            st.session_state.conversation = get_conversation_chain(embeddingsDB)
+                            st.session_state.conversation = get_conversation_chain(embeddingsDB, False)
                         st.write("Done!")
                         time.sleep(5) 
             else:
@@ -129,16 +130,24 @@ def main():
                     if st.button('Feed me!'):
                         with st.spinner('Processing'):
                             text = extractPdfText(pdfs)
-                            chunks = textChunks(text, False)
-                            embeddingsDB = vectorDB(chunks)
-                            model = get_conversation_chain(embeddingsDB)
+                            chunks = textChunks(text, True)
+                            output = chromaDB(chunks, db_name)
+                            st.write(output)
                             
-                            st.write(model({'question': 'What is Spyros job'}))
-                            time.sleep(5)
         else:
+            db_name = st.text_input("Give the name of already existing database:")
+            try: 
+                retriever_db = retriever(db_name)
+                st.write('database loaded successfully. You can now proceed with your questions')
+                st.session_state.conversation = get_conversation_chain(retriever_db, True)
+            except:
+                print('unable to load the database')    
+                
+                
+                
+            
         
-            st.write('implement load')
-                    
+
       
 
 
