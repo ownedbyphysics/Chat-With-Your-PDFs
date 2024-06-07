@@ -21,6 +21,6 @@ Make sure you have the following installed:
 6. access the application at http://localhost:8501
 
 
-   Page screenshot:
+   Page screenshot, using one single shot and uploading my CV:
 ![image](https://github.com/ownedbyphysics/Chat-With-Your-PDFs/assets/48797734/0f3c850a-6364-4bb1-8445-7a1f7bedea46)
 
