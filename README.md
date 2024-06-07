@@ -9,10 +9,16 @@ Storage: The storage mode provides you the ability to create your own database o
 The load option later asks you to provide the name of the dataset to load it (load the stored embeddings) and start asking questions.
 
 How to use:
+
+Make sure you have the following installed:
+-Python 3.7 or later
+-pip (Python package installer)
+
 1. clone the repo
-2. make sure to install the dependencies stated in the requirements.txt file
-3. make sure to use your own open_ai key. You can create one here -> https://platform.openai.com/api-keys
-4. open a command prompt, navigate to the directory you cloned the project and run the following command 'streamlit run main.py'
+2. make sure to install the dependencies stated in the requirements.txt file with pip install -r requirements.txt
+4. make sure to use your own open_ai key. You can create one here -> https://platform.openai.com/api-keys
+5. open a command prompt, navigate to the directory you cloned the project and run the following command 'streamlit run main.py'
+6. access the application at http://localhost:8501
 
 
    Page screenshot:
