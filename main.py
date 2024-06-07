@@ -117,7 +117,7 @@ def main():
                 if st.button('Feed me!'):
                         with st.spinner('Processing'):
                             text = extractPdfText(pdfs)
-                            chunks = textChunks(text, True)
+                            chunks = textChunks(text, False)
                             embeddingsDB = vectorDB(chunks)
                             st.session_state.conversation = get_conversation_chain(embeddingsDB, False)
                         st.write("Done!")
