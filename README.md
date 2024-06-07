@@ -22,4 +22,5 @@ Make sure you have the following installed:
 
 
    Page screenshot:
-   ![image](https://github.com/ownedbyphysics/Chat-With-Your-PDFs/assets/48797734/83c15889-ac09-4feb-8a50-86fa8bc9f63f)
+![image](https://github.com/ownedbyphysics/Chat-With-Your-PDFs/assets/48797734/0f3c850a-6364-4bb1-8445-7a1f7bedea46)
+
