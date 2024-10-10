@@ -1,3 +1,4 @@
+import os
 import time
 import streamlit as st 
 from dotenv import load_dotenv
@@ -135,13 +136,16 @@ def main():
                             st.write(output)
                             
         else:
-            db_name = st.text_input("Give the name of already existing database:")
-            try: 
-                retriever_db = retriever(db_name)
-                st.write('database loaded successfully. You can now proceed with your questions')
-                st.session_state.conversation = get_conversation_chain(retriever_db, True)
-            except:
-                print('unable to load the database')    
+            db_name = st.text_input("Give the name of an already existing database:")
+            if db_name:
+                try: 
+                    retriever_db = retriever(db_name)
+                    st.write('database loaded successfully. You can now proceed with your questions')
+                    st.session_state.conversation = get_conversation_chain(retriever_db, True)
+                except FileNotFoundError as e:
+                    st.error(str(e))
+                except Exception as e:
+                    print('unable to load the database')    
                 
                 
                 

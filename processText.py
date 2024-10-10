@@ -82,6 +82,10 @@ def chromaDB(chunks, name):
 
     
 def retriever(database_name):
+    if not os.path.exists(database_name):
+        raise FileNotFoundError(f"The database '{database_name}' does not exist.")
+    
+    
     vectordb = Chroma(persist_directory=str(database_name), 
                       embedding_function=OpenAIEmbeddings(openai_api_key=openai_api_key))
 
